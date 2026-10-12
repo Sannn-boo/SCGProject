@@ -2,9 +2,7 @@ flowchart LR
     %% Styling Classes
     classDef rootClass fill:#1e3a8a,stroke:#1e40af,stroke-width:2px,color:#ffffff;
     classDef groupClass fill:#dbeafe,stroke:#3b82f6,stroke-width:2px,color:#1e3a8a;
-    classDef highClass fill:#fee2e2,stroke:#ef4444,stroke-width:1.5px,color:#991b1b;
-    classDef medClass fill:#fef3c7,stroke:#f59e0b,stroke-width:1.5px,color:#92400e;
-    classDef lowClass fill:#f3f4f6,stroke:#9ca3af,stroke-width:1.5px,color:#374151;
+    classDef plainNode fill:#ffffff,stroke:#94a3b8,stroke-width:1.5px,color:#0f172a;
 
     Root(["Clinical 3D Reconstruction System<br/><b>Functional Requirements (SRS Scope)</b>"]):::rootClass
 
@@ -18,21 +16,21 @@ flowchart LR
     Root --> S3
 
     %% Section 1: Home and Information
-    S1 --> FR01["<b>FR-01: Pipeline Stage Overview</b><br/>Display 7 pipeline stages with descriptions<br/><i>[Priority: Medium]</i>"]:::medClass
-    S1 --> FR02["<b>FR-02: Technology Stack Display</b><br/>Show/hide stack details (Python, Trimesh, ArUco)<br/><i>[Priority: Medium]</i>"]:::medClass
-    S1 --> FR03["<b>FR-03: Precomputed Sample Datasets</b><br/>Provide precomputed demo data<br/><i>[Priority: Low]</i>"]:::lowClass
+    S1 --> FR01["<b>FR-01: Pipeline Stage Overview</b><br/>Display 7 pipeline stages with descriptions<br/><i>[Priority: Medium]</i>"]:::plainNode
+    S1 --> FR02["<b>FR-02: Technology Stack Display</b><br/>Show/hide stack details (Python, Trimesh, ArUco)<br/><i>[Priority: Medium]</i>"]:::plainNode
+    S1 --> FR03["<b>FR-03: Precomputed Sample Datasets</b><br/>Provide precomputed demo data<br/><i>[Priority: Low]</i>"]:::plainNode
 
     %% Section 2: Image Upload
-    S2 --> FR04["<b>FR-04: Drag-and-Drop & File Picker</b><br/>Support drag-and-drop or manual selection<br/><i>[Priority: High]</i>"]:::highClass
-    S2 --> FR05["<b>FR-05: Photo Count Constraint (6-12)</b><br/>Enforce 6 to 12 images per job & reject others<br/><i>[Priority: High]</i>"]:::highClass
-    S2 --> FR06["<b>FR-06: File Validation (Format & Size)</b><br/>Validate image format, non-empty, max 25 MB<br/><i>[Priority: High]</i>"]:::highClass
-    S2 --> FR07["<b>FR-07: Upload Progress & Total Size</b><br/>Show upload progress bar and total file size<br/><i>[Priority: Medium]</i>"]:::medClass
-    S2 --> FR08["<b>FR-08: Unique Job ID & Photo Ordering</b><br/>Assign unique job ID and preserve image order<br/><i>[Priority: High]</i>"]:::highClass
+    S2 --> FR04["<b>FR-04: Drag-and-Drop & File Picker</b><br/>Support drag-and-drop or manual selection<br/><i>[Priority: High]</i>"]:::plainNode
+    S2 --> FR05["<b>FR-05: Photo Count Constraint (6-12)</b><br/>Enforce 6 to 12 images per job & reject others<br/><i>[Priority: High]</i>"]:::plainNode
+    S2 --> FR06["<b>FR-06: File Validation (Format & Size)</b><br/>Validate image format, non-empty, max 25 MB<br/><i>[Priority: High]</i>"]:::plainNode
+    S2 --> FR07["<b>FR-07: Upload Progress & Total Size</b><br/>Show upload progress bar and total file size<br/><i>[Priority: Medium]</i>"]:::plainNode
+    S2 --> FR08["<b>FR-08: Unique Job ID & Photo Ordering</b><br/>Assign unique job ID and preserve image order<br/><i>[Priority: High]</i>"]:::plainNode
 
     %% Section 3: Image Framing Check (Stage 0)
-    S3 --> FR09["<b>FR-09: Automated Stage 0 Detection</b><br/>Detect ArUco cube, limb and marker band<br/><i>[Priority: High]</i>"]:::highClass
-    S3 --> FR10["<b>FR-10: Square Window Cropping</b><br/>Crop usable photos to square window for VGGT<br/><i>[Priority: High]</i>"]:::highClass
-    S3 --> FR11["<b>FR-11: Frame Verdict Classification</b><br/>Assign Pass, Warning, or Reject with reasons<br/><i>[Priority: High]</i>"]:::highClass
-    S3 --> FR12["<b>FR-12: Annotated Overlay & Framing Mode</b><br/>Display annotated visual overlay per frame<br/><i>[Priority: Medium]</i>"]:::medClass
-    S3 --> FR13["<b>FR-13: Aggregate Status & Retake Advice</b><br/>Show overall status & identify retake photo numbers<br/><i>[Priority: High]</i>"]:::highClass
-    S3 --> FR14["<b>FR-14: Reject Block & Force Proceed</b><br/>Block on reject but allow manual override<br/><i>[Priority: Medium]</i>"]:::medClass
+    S3 --> FR09["<b>FR-09: Automated Stage 0 Detection</b><br/>Detect ArUco cube, limb and marker band<br/><i>[Priority: High]</i>"]:::plainNode
+    S3 --> FR10["<b>FR-10: Square Window Cropping</b><br/>Crop usable photos to square window for VGGT<br/><i>[Priority: High]</i>"]:::plainNode
+    S3 --> FR11["<b>FR-11: Frame Verdict Classification</b><br/>Assign Pass, Warning, or Reject with reasons<br/><i>[Priority: High]</i>"]:::plainNode
+    S3 --> FR12["<b>FR-12: Annotated Overlay & Framing Mode</b><br/>Display annotated visual overlay per frame<br/><i>[Priority: Medium]</i>"]:::plainNode
+    S3 --> FR13["<b>FR-13: Aggregate Status & Retake Advice</b><br/>Show overall status & identify retake photo numbers<br/><i>[Priority: High]</i>"]:::plainNode
+    S3 --> FR14["<b>FR-14: Reject Block & Force Proceed</b><br/>Block on reject but allow manual override<br/><i>[Priority: Medium]</i>"]:::plainNode
