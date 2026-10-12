@@ -1,0 +1,41 @@
+flowchart LR
+    %% Styling
+    classDef rootClass fill:#1e3a8a,stroke:#1e40af,stroke-width:2px,color:#ffffff;
+    classDef groupClass fill:#dbeafe,stroke:#3b82f6,stroke-width:2px,color:#1e3a8a;
+    classDef frClass fill:#ffffff,stroke:#64748b,stroke-width:1.5px,color:#0f172a;
+
+    Root(["Clinical 3D Reconstruction System<br/><b>Functional Requirements (FR)</b>"]):::rootClass
+
+    %% Groups
+    G1["1. Data Ingestion & Validation"]:::groupClass
+    G2["2. 3D Spatial Reconstruction"]:::groupClass
+    G3["3. Human-in-the-Loop Review"]:::groupClass
+    G4["4. Mesh Geometry Processing"]:::groupClass
+    G5["5. Metric Volume Measurement"]:::groupClass
+    G6["6. Job Dispatch & Tracking"]:::groupClass
+
+    Root --> G1
+    Root --> G2
+    Root --> G3
+    Root --> G4
+    Root --> G5
+    Root --> G6
+
+    %% Sub-requirements
+    G1 --> FR01["<b>FR-01: Multi-Angle Photo Upload</b><br/>รองรับชุดภาพถ่ายรอบทิศทาง (Upload.tsx)"]:::frClass
+    G1 --> FR02["<b>FR-02: Framing & Marker Detection</b><br/>ตรวจเช็กมุมกล้องและมาร์กเกอร์ (Framing.tsx + VLM)"]:::frClass
+
+    G2 --> FR03["<b>FR-03: Neural Depth & Pose Inference</b><br/>ประมาณความลึกและองศากล้อง (inference.py + VGGT)"]:::frClass
+    G2 --> FR04["<b>FR-04: Dense Point Cloud Generation</b><br/>รวมจุด 3 มิติและเซฟ scene_mesh.ply (pointcloud.py)"]:::frClass
+
+    G3 --> FR05["<b>FR-05: Interactive 3D Cut Adjustment</b><br/>หยุดรอคนและเลื่อนระนาบตัดขา (Review.tsx + usePly)"]:::frClass
+    G3 --> FR06["<b>FR-06: Selective Recut Execution</b><br/>สั่งตัดรอบสองและรันต่อเฉพาะ Stage 3-6 (POST /recut)"]:::frClass
+
+    G4 --> FR07["<b>FR-07: Background Segmentation</b><br/>ตัดแยกฉากหลังและสายรัดมาร์กเกอร์ (clean.py)"]:::frClass
+    G4 --> FR08["<b>FR-08: Surface Mesh Generation</b><br/>แปลงพอยต์คลาวด์เป็นโพลีกอนตาข่าย (reconstruct.py)"]:::frClass
+    G4 --> FR09["<b>FR-09: Watertight Mesh Repair</b><br/>อุดรูรั่วโมเดลให้ตันสนิท 100% (watertight.py)"]:::frClass
+
+    G5 --> FR10["<b>FR-10: Physical Scale & Volume Calc</b><br/>เทียบสเกล ArUco และคำนวณปริมาตร (volume.py)"]:::frClass
+    G5 --> FR11["<b>FR-11: Result Visualization & Export</b><br/>หมุนดูโมเดล 3D และดาวน์โหลด CSV (Result.tsx)"]:::frClass
+
+    G6 --> FR12["<b>FR-12: Sequential Subprocess Dispatch</b><br/>รัน stagerun.py ทีละขั้นและแสดงหลอดโหลด (jobs.py)"]:::frClass
