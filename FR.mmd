@@ -4,58 +4,33 @@ flowchart LR
     classDef groupClass fill:#dbeafe,stroke:#3b82f6,stroke-width:2px,color:#1e3a8a;
     classDef plainNode fill:#ffffff,stroke:#94a3b8,stroke-width:1.5px,color:#0f172a;
 
-    Root(["Clinical 3D Reconstruction System<br/><b>Complete Functional Requirements </b>"]):::rootClass
+    Root(["Clinical 3D Web System<br/><b>Functional Requirements (Web Platform Scope)</b>"]):::rootClass
 
-    %% Requirement Sections
-    S1["1. Home and Information"]:::groupClass
-    S2["2. Image Upload"]:::groupClass
-    S3["3. Image Framing Check (Stage 0)"]:::groupClass
-    S4["4. 3D Spatial Reconstruction (Stage 1-2)"]:::groupClass
-    S5["5. Interactive Cut Review (Human-in-the-Loop)"]:::groupClass
-    S6["6. Geometry Processing (Stage 3-5)"]:::groupClass
-    S7["7. Volume Measurement & Export (Stage 6)"]:::groupClass
+    %% Main Modules
+    M1["1. Frontend User Experience<br/>(Next.js Client)"]:::groupClass
+    M2["2. Backend API & Storage<br/>(FastAPI Service)"]:::groupClass
+    M3["3. Pipeline Orchestration<br/>(Integration Layer)"]:::groupClass
 
-    Root --> S1
-    Root --> S2
-    Root --> S3
-    Root --> S4
-    Root --> S5
-    Root --> S6
-    Root --> S7
+    Root --> M1
+    Root --> M2
+    Root --> M3
 
-    %% Section 1: Home and Information
-    S1 --> FR01["<b>FR-01: Pipeline Stage Overview</b><br/>Display 7 pipeline stages with descriptions<br/><i>[Priority: Medium]</i>"]:::plainNode
-    S1 --> FR02["<b>FR-02: Technology Stack Display</b><br/>Show/hide stack details (Python, Trimesh, ArUco)<br/><i>[Priority: Medium]</i>"]:::plainNode
-    S1 --> FR03["<b>FR-03: Precomputed Sample Datasets</b><br/>Provide precomputed demo data<br/><i>[Priority: Low]</i>"]:::plainNode
+    %% Section 1: Frontend User Experience
+    M1 --> FR_F01["<b>FR-F01: System Overview & Demos</b><br/>Display 7-stage guide, tech stack & sample datasets (Home)<br/><i>[Priority: Medium]</i>"]:::plainNode
+    M1 --> FR_F02["<b>FR-F02: Multi-View Photo Upload UI</b><br/>Drag-and-drop ingestion, 6-12 photos, max 25MB check (Upload.tsx)<br/><i>[Priority: High]</i>"]:::plainNode
+    M1 --> FR_F03["<b>FR-F03: Stage 0 Visual Framing Gate</b><br/>Render overlays, Pass/Warning/Reject badges & retake flags (Framing.tsx)<br/><i>[Priority: High]</i>"]:::plainNode
+    M1 --> FR_F04["<b>FR-F04: Real-Time Execution Tracking</b><br/>Poll job progress, live status badges & stage logs (Processing.tsx)<br/><i>[Priority: High]</i>"]:::plainNode
+    M1 --> FR_F05["<b>FR-F05: Interactive 3D Cut Tool</b><br/>Three.js viewport to adjust anatomical cut plane (Review.tsx)<br/><i>[Priority: High]</i>"]:::plainNode
+    M1 --> FR_F06["<b>FR-F06: Metric Dashboard & 3D Viewer</b><br/>Render final 3D model, volume display & CSV/mesh export (Result.tsx)<br/><i>[Priority: High]</i>"]:::plainNode
 
-    %% Section 2: Image Upload
-    S2 --> FR04["<b>FR-04: Drag-and-Drop & File Picker</b><br/>Support drag-and-drop or manual selection<br/><i>[Priority: High]</i>"]:::plainNode
-    S2 --> FR05["<b>FR-05: Photo Count Constraint (6-12)</b><br/>Enforce 6 to 12 images per job & reject others<br/><i>[Priority: High]</i>"]:::plainNode
-    S2 --> FR06["<b>FR-06: File Validation (Format & Size)</b><br/>Validate image format, non-empty, max 25 MB<br/><i>[Priority: High]</i>"]:::plainNode
-    S2 --> FR07["<b>FR-07: Upload Progress & Total Size</b><br/>Show upload progress bar and total file size<br/><i>[Priority: Medium]</i>"]:::plainNode
-    S2 --> FR08["<b>FR-08: Unique Job ID & Photo Ordering</b><br/>Assign unique job ID and preserve image order<br/><i>[Priority: High]</i>"]:::plainNode
+    %% Section 2: Backend API & Storage
+    M2 --> FR_B01["<b>FR-B01: Job Lifecycle REST APIs</b><br/>Provide endpoints to create, monitor & manage jobs (POST /jobs, GET /jobs/:id)<br/><i>[Priority: High]</i>"]:::plainNode
+    M2 --> FR_B02["<b>FR-B02: Upload Validation & Storage</b><br/>Enforce constraints, preserve photo order & create unique job directory<br/><i>[Priority: High]</i>"]:::plainNode
+    M2 --> FR_B03["<b>FR-B03: Cut Parameter Ingestion</b><br/>Provide POST /recut to ingest plane normal & intercept vectors<br/><i>[Priority: High]</i>"]:::plainNode
+    M2 --> FR_B04["<b>FR-B04: Artifact & Static Streaming</b><br/>Stream point clouds, final meshes (.ply/.stl) & volumes.csv to client<br/><i>[Priority: High]</i>"]:::plainNode
 
-    %% Section 3: Image Framing Check (Stage 0)
-    S3 --> FR09["<b>FR-09: Automated Stage 0 Detection</b><br/>Detect ArUco cube, limb and marker band<br/><i>[Priority: High]</i>"]:::plainNode
-    S3 --> FR10["<b>FR-10: Square Window Cropping</b><br/>Crop usable photos to square window for VGGT<br/><i>[Priority: High]</i>"]:::plainNode
-    S3 --> FR11["<b>FR-11: Frame Verdict Classification</b><br/>Assign Pass, Warning, or Reject with reasons<br/><i>[Priority: High]</i>"]:::plainNode
-    S3 --> FR12["<b>FR-12: Annotated Overlay & Framing Mode</b><br/>Display annotated visual overlay per frame<br/><i>[Priority: Medium]</i>"]:::plainNode
-    S3 --> FR13["<b>FR-13: Aggregate Status & Retake Advice</b><br/>Show overall status & identify retake photo numbers<br/><i>[Priority: High]</i>"]:::plainNode
-    S3 --> FR14["<b>FR-14: Reject Block & Force Proceed</b><br/>Block on reject but allow manual override<br/><i>[Priority: Medium]</i>"]:::plainNode
-
-    %% Section 4: 3D Spatial Reconstruction (Stage 1-2)
-    S4 --> FR15["<b>FR-15: Neural Depth & Pose Inference</b><br/>Predict multi-view depth maps & camera poses via VGGT<br/><i>[Priority: High]</i>"]:::plainNode
-    S4 --> FR16["<b>FR-16: Dense Point Cloud Generation</b><br/>Fuse 3D points & export scene_mesh.ply<br/><i>[Priority: High]</i>"]:::plainNode
-
-    %% Section 5: Interactive Cut Review 
-    S5 --> FR17["<b>FR-17: Interactive 3D Cut Adjustment</b><br/>Enable user alignment of 3D anatomical cut plane<br/><i>[Priority: High]</i>"]:::plainNode
-    S5 --> FR18["<b>FR-18: Selective Recut Execution</b><br/>Re-run stages 3-6 with new cut parameters (POST /recut)<br/><i>[Priority: High]</i>"]:::plainNode
-
-    %% Section 6: Geometry Processing (Stage 3-5)
-    S6 --> FR19["<b>FR-19: Background & Marker Segmentation</b><br/>Filter out bed, floor & marker tracking bands<br/><i>[Priority: High]</i>"]:::plainNode
-    S6 --> FR20["<b>FR-20: Surface Mesh Reconstruction</b><br/>Generate 3D triangle mesh topology from points<br/><i>[Priority: High]</i>"]:::plainNode
-    S6 --> FR21["<b>FR-21: Watertight Manifold Repair</b><br/>Seal geometric holes to guarantee closed manifold<br/><i>[Priority: High]</i>"]:::plainNode
-
-    %% Section 7: Volume Measurement & Export (Stage 6)
-    S7 --> FR22["<b>FR-22: Metric Scale & Volume Calibration</b><br/>Calibrate metric scale via ArUco & calculate cm3 volume<br/><i>[Priority: High]</i>"]:::plainNode
-    S7 --> FR23["<b>FR-23: 3D Inspection & Metrics Export</b><br/>Render final 3D model & export volume summary CSV<br/><i>[Priority: High]</i>"]:::plainNode
+    %% Section 3: Pipeline Orchestration & Integration
+    M3 --> FR_I01["<b>FR-I01: Asynchronous Subprocess Dispatch</b><br/>Spawn downstream stage scripts via stagerun.py without blocking API loop<br/><i>[Priority: High]</i>"]:::plainNode
+    M3 --> FR_I02["<b>FR-I02: Human-in-the-Loop State Machine</b><br/>Halt pipeline at awaiting-cut post Stage 2 until clinician confirms cut<br/><i>[Priority: High]</i>"]:::plainNode
+    M3 --> FR_I03["<b>FR-I03: Partial Pipeline Resumption</b><br/>Re-trigger stages 3-6 with --cut-only flag using ingested cut plane<br/><i>[Priority: High]</i>"]:::plainNode
+    M3 --> FR_I04["<b>FR-I04: Subprocess Monitoring & Logging</b><br/>Capture stdout/stderr, detect execution failures & update job status<br/><i>[Priority: Medium]</i>"]:::plainNode
