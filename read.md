@@ -1,6 +1,4 @@
-```mermaid
 flowchart TD
- flowchart TD
     %% Styling Classes
     classDef userClass fill:#dbeafe,stroke:#3b82f6,stroke-width:2px,color:#1e3a8a;
     classDef frontClass fill:#e0f2fe,stroke:#0284c7,stroke-width:1.5px,color:#0369a1;
@@ -75,7 +73,7 @@ flowchart TD
         MeshFixWorker["Mesh Repair Worker<br/><b>[workers/meshfix_worker.py]</b>"]:::workerClass
     end
 
-    Artifacts[("📁 Job Artifacts & Storage<br/>[output/<job_id>/ & checkpoints/]")]:::dbClass
+    Artifacts[("📁 Job Artifacts & Storage<br/>[output/job_id/ & checkpoints/]")]:::dbClass
 
     %% Connections: User & Page
     User --> Page
@@ -104,7 +102,7 @@ flowchart TD
     App -->|"submit(job, '0') & submit(job, '1-6')"| JobRunner
     App -->|"submit(job, '3-6', --cut-only)"| JobRunner
     App -.->|"serves static files"| Artifacts
-    JobRunner -->|"spawns: python stagerun.py &lt;stage&gt;"| StageRun
+    JobRunner -->|"spawns: python stagerun.py stage"| StageRun
 
     %% Sequential Pipeline Execution
     StageRun --> S0
@@ -132,4 +130,3 @@ flowchart TD
     S3 -.->|"calls helper"| SegHelper
     S4 -.->|"spawns subprocess"| ReconsWorker
     S5 -.->|"spawns subprocess"| MeshFixWorker
-```
