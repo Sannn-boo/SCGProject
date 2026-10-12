@@ -1,0 +1,86 @@
+flowchart TD
+
+    User["User"]
+
+    subgraph Frontend["Frontend Client - Next.js"]
+        Page["State Controller - page.tsx"]
+        Upload["Photo Upload - Upload.tsx"]
+        Framing["Frame Review - Framing.tsx"]
+        Processing["Progress Status - Processing.tsx"]
+        Review["Interactive Cut Review - Review.tsx"]
+        Result["Measurement Results - Result.tsx"]
+        CutViewer["3D Cut Viewer - CutReview.tsx"]
+        MeshView["3D Mesh Viewer - MeshView.tsx"]
+        PlyLoader["PLY Loader - usePly.ts"]
+        API["Browser API Client - api.ts"]
+        Data["Artifact Readers - data.ts"]
+    end
+
+    subgraph Backend["Backend Service - FastAPI"]
+        App["HTTP Service - app.py"]
+        JobRunner["Job Queue and Runner - jobs.py"]
+        StageRun["Stage Runner - stagerun.py"]
+    end
+
+    subgraph Pipeline["Measurement Pipeline Stages"]
+        S0["Stage 0: Photo Preparation - prep.py"]
+        S1["Stage 1: VGGT Inference - inference.py"]
+        S2["Stage 2: Point Cloud - pointcloud.py"]
+        WaitCut{"Waiting Cut Confirmation - awaiting-cut"}
+        S3["Stage 3: Marker Segmentation - clean.py"]
+        S4["Stage 4: Mesh Reconstruction - reconstruct.py"]
+        S5["Stage 5: Mesh Repair - watertight.py"]
+        S6["Stage 6: Volume Calibration - volume.py"]
+    end
+
+    subgraph Models["AI Models and Workers"]
+        VLM["VLM Model: GroundingDINO and SAM"]
+        VGGT["VGGT: Aggregator, DPT Heads, Camera Head"]
+        SegHelper["Segmentation Helper - segmentation.py"]
+        ReconsWorker["Reconstruct Worker - recons_methods_worker.py"]
+        MeshFixWorker["Mesh Repair Worker - meshfix_worker.py"]
+    end
+
+    Artifacts[("Job Artifacts Storage")]
+
+    User --> Page
+    Page --> Upload
+    Page --> Framing
+    Page --> Processing
+    Page --> Review
+    Page --> Result
+
+    Upload -->|"1. creates job"| API
+    Framing -->|"2. confirms framing or rebuild"| API
+    Processing -->|"3. polls status"| API
+    Review --> CutViewer
+    CutViewer --> PlyLoader
+    Review -->|"4. confirms cut POST recut"| API
+    Result --> MeshView
+    MeshView --> PlyLoader
+    Result -->|"loads results"| Data
+
+    Data --> App
+    PlyLoader --> App
+    API --> App
+
+    App --> JobRunner
+    App -.-> Artifacts
+    JobRunner --> StageRun
+
+    StageRun --> S0
+    S0 --> S1
+    S1 --> S2
+    S2 --> Artifacts
+    S2 --> WaitCut
+    WaitCut --> S3
+    S3 --> S4
+    S4 --> S5
+    S5 --> S6
+    S6 --> Artifacts
+
+    S0 -.-> VLM
+    S1 -.-> VGGT
+    S3 -.-> SegHelper
+    S4 -.-> ReconsWorker
+    S5 -.-> MeshFixWorker
