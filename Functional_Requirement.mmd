@@ -1,0 +1,41 @@
+flowchart LR
+    %% Styling Classes
+    classDef rootClass fill:#1e3a8a,stroke:#1e40af,stroke-width:2px,color:#ffffff;
+    classDef groupClass fill:#dbeafe,stroke:#3b82f6,stroke-width:2px,color:#1e3a8a;
+    classDef frClass fill:#ffffff,stroke:#64748b,stroke-width:1.5px,color:#0f172a;
+
+    Root(["Clinical 3D Reconstruction System<br/><b>Functional Requirements (FR)</b>"]):::rootClass
+
+    %% Requirement Groups
+    G1["1. Data Ingestion & Validation"]:::groupClass
+    G2["2. 3D Spatial Reconstruction"]:::groupClass
+    G3["3. Human-in-the-Loop Review"]:::groupClass
+    G4["4. Mesh Geometry Processing"]:::groupClass
+    G5["5. Metric Volume Measurement"]:::groupClass
+    G6["6. Job Dispatch & Tracking"]:::groupClass
+
+    Root --> G1
+    Root --> G2
+    Root --> G3
+    Root --> G4
+    Root --> G5
+    Root --> G6
+
+    %% Detailed Functional Requirements
+    G1 --> FR01["<b>FR-01: Multi-Angle Photo Ingestion</b><br/>Upload multi-view clinical photoset (Upload.tsx)"]:::frClass
+    G1 --> FR02["<b>FR-02: Framing & Marker Detection</b><br/>Validate frame coverage & markers (Framing.tsx + VLM)"]:::frClass
+
+    G2 --> FR03["<b>FR-03: Neural Depth & Pose Inference</b><br/>Estimate depth map & camera poses (inference.py + VGGT)"]:::frClass
+    G2 --> FR04["<b>FR-04: Dense Point Cloud Generation</b><br/>Fuse 3D points & export scene_mesh.ply (pointcloud.py)"]:::frClass
+
+    G3 --> FR05["<b>FR-05: Interactive 3D Cut Adjustment</b><br/>User aligns anatomical cut plane (Review.tsx + usePly)"]:::frClass
+    G3 --> FR06["<b>FR-06: Selective Recut Execution</b><br/>Re-run stages 3-6 with new cut plane (POST /recut)"]:::frClass
+
+    G4 --> FR07["<b>FR-07: Background Segmentation</b><br/>Filter floor, bed & marker bands (clean.py)"]:::frClass
+    G4 --> FR08["<b>FR-08: Surface Mesh Reconstruction</b><br/>Reconstruct polygon surface mesh (reconstruct.py)"]:::frClass
+    G4 --> FR09["<b>FR-09: Watertight Mesh Repair</b><br/>Fill holes & seal manifold geometry (watertight.py)"]:::frClass
+
+    G5 --> FR10["<b>FR-10: Physical Scale & Volume Calc</b><br/>Calibrate scale via ArUco & compute volume (volume.py)"]:::frClass
+    G5 --> FR11["<b>FR-11: Result Visualization & Export</b><br/>Interactive 3D viewing & metrics export (Result.tsx)"]:::frClass
+
+    G6 --> FR12["<b>FR-12: Sequential Subprocess Dispatch</b><br/>Execute stagerun.py & report progress (jobs.py)"]:::frClass
